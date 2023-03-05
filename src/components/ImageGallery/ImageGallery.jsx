@@ -1,27 +1,33 @@
-import { Component } from 'react';
-import { getImages } from 'services/getImages';
+import PropTypes from 'prop-types';
+import ImageGalleryItem from 'components/ImageGalleryItem';
 import { List } from './ImageGallery.styled';
 
-class ImageGallery extends Component {
-    componentDidUpdate(prevProps, prevState) {
-        if (prevProps.searchText !== this.props.searchText) {
-            try {
-                const { images, totalImages } = getImages(this.props.searchText, this.props.page);
-                console.log(images);
-                console.log("totalImg=", totalImages);
-            }
-            catch (error) {
-                console.error(error);
-            }
-        }
-    }
-    render() {
+function ImageGallery({ images }) {
+        
         return (
             <List>
-                {/* {this.props.images} */}
+
+                {images.map(({ id, webformatURL, largeImageURL, tags }) => (
+                    <ImageGalleryItem
+                        key={id}
+                        webformatURL={webformatURL}
+                        largeImageURL={largeImageURL}
+                        tags={tags}
+                    />
+                ))}
             </List>
         )
-    }
 }
+
+ImageGallery.propTypes = {
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+      tags: PropTypes.string.isRequired,
+    }).isRequired
+  ).isRequired,
+};
 
 export default ImageGallery;
