@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { Form as FormikForm, ErrorMessage as FormikError } from 'formik';
 
-export const Form = styled(FormikForm)`
+export const Header = styled.header`
   top: 0;
   left: 0;
   position: sticky;
@@ -20,7 +19,7 @@ export const Form = styled(FormikForm)`
     0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 `;
 
-export const FormField = styled.label`
+export const Searchform = styled.form`
   display: flex;
   align-items: center;
   width: 100%;
@@ -30,11 +29,7 @@ export const FormField = styled.label`
   overflow: hidden;
 `;
 
-export const ErrorMessage = styled(FormikError)`
-  color: tomato;
-`;
-
-export const FrmButton = styled.button`
+export const Searchformbutton = styled.button`
   display: inline-block;
   width: 48px;
   height: 48px;
@@ -48,12 +43,12 @@ export const FrmButton = styled.button`
   cursor: pointer;
   outline: none;
 
-  &&:hover {
-  opacity: 1;
+  &::hover {
+    opacity: 1;
   }
-`;
+`
 
-export const FrmButtonLabel = styled.span`
+export const Searchformbuttonlabel = styled.span`
   position: absolute;
   width: 1px;
   height: 1px;
@@ -63,4 +58,20 @@ export const FrmButtonLabel = styled.span`
   white-space: nowrap;
   clip-path: inset(50%);
   border: 0;
+`
+
+export const Searchforminput =styled.input`
+  display: inline-block;
+  width: 100%;
+  font: inherit;
+  font-size: 20px;
+  border: none;
+  outline: none;
+  padding-left: 4px;
+  padding-right: 4px;
+
+  &::placeholder {
+    font: inherit;
+    font-size: 18px;
+  }
 `

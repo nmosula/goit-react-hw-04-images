@@ -1,47 +1,43 @@
-import { Formik, Field } from 'formik';
-import { Form, FormField, ErrorMessage, FrmButton, FrmButtonLabel } from './Searchbar.styled';
-import * as Yup from 'yup';
+import { Component } from "react";
+import { Header, Searchform, Searchformbutton,Searchformbuttonlabel, Searchforminput } from './Searchbar.styled';
 
 
-const nameRegex = /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/;
+class Searchbar extends Component {
+    state = {
+        searchQuery: "",
+    }
 
-const Schema = Yup.object().shape({
-    searchQuery: Yup.string()
-        .matches(nameRegex, {message: "Invalid Search text", })
-        .required('Required'),
-});
+    handleChange = ({ target: { value } }) => {
+        this.setState({ searchQuery: value });   
+    }
 
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.props.onSearch(this.state.searchQuery);
+        this.setState({ searchQuery: "" });
+    }
 
-const Searchbar = ({ onSave }) => {
+    render () {
+        return (
+            <Header>
+            <Searchform onSubmit={this.handleSubmit}>
+                <Searchformbutton>
+                <Searchformbuttonlabel>Search</Searchformbuttonlabel>
+                </Searchformbutton>
 
-    return (
-            <Formik
-                initialValues={{
-                    searchQuery: '',
-                }}
-                validationSchema={Schema}
-                onSubmit={(values, actions) => {
-                    onSave({
-                        ...values,
-                    });
-                    actions.resetForm();
-                }}
-            >
-
-            <Form>
-                <FormField>
-                    <FrmButton type="submit">
-                        <FrmButtonLabel></FrmButtonLabel>
-                    </FrmButton>
-                    <Field name="searchQuery" />
-                    <ErrorMessage name="searchQuery" component="span" />
-                </FormField>
-            </Form>
-    
-            </Formik>
-
-    );
-    
+                <Searchforminput
+                    className="input"
+                    type="text"
+                    autoComplete="off"
+                    autoFocus
+                    placeholder="Search images and photos"
+                    value={this.state.searchQuery}
+                    onChange = {this.handleChange}
+                />
+            </Searchform>
+            </Header>
+        );
+    }
 }
 
 export default Searchbar;
