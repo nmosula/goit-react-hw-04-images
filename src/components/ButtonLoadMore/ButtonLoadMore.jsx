@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
-import { StyledButton } from './ButtonLoadMore.styled';
+import { StyledButton, Section } from './ButtonLoadMore.styled';
 
 const ButtonLoadMore = ({ onClick }) => (
-  <StyledButton type="button" onClick={onClick}>
-    Load More
-  </StyledButton>
+  <Section>
+    <StyledButton type="button" onClick={onClick}>
+      Load More
+    </StyledButton>
+  </Section>
 );
 
 ButtonLoadMore.propTypes = {

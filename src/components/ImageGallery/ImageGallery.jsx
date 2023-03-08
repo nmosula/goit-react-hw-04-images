@@ -6,7 +6,6 @@ function ImageGallery({ images }) {
         
         return (
             <List>
-
                 {images.map(({ id, webformatURL, largeImageURL, tags }) => (
                     <ImageGalleryItem
                         key={id}

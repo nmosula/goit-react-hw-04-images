@@ -1,5 +1,10 @@
 import styled from 'styled-components';
 
+export const Section = styled.div`
+  margin: 10px auto;
+  text-align: center;
+`
+
 export const StyledButton = styled.button`
   padding: 8px 16px;
   border-radius: 2px;

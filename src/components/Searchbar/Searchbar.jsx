@@ -22,7 +22,7 @@ class Searchbar extends Component {
             <Header>
             <Searchform onSubmit={this.handleSubmit}>
                 <Searchformbutton>
-                <Searchformbuttonlabel>Search</Searchformbuttonlabel>
+                    <Searchformbuttonlabel>Search</Searchformbuttonlabel>
                 </Searchformbutton>
 
                 <Searchforminput
