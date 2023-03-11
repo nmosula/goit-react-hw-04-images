@@ -47,6 +47,8 @@ export class App extends Component {
 
   handleSubmitSearchImage = (searchValue) => {
     if (!searchValue) return;
+    if (this.state.searchText === searchValue) return;
+
 
     this.setState({ 
       searchText: searchValue,
@@ -73,10 +75,12 @@ export class App extends Component {
 
           {this.state.status === 'pending' && <Loader />}
 
-          {this.state.images.length>0 && (
-            <ImageGallery images={this.state.images} />
+          {this.state.images.length > 0 && (
+            <>
+              <ImageGallery images={this.state.images} />
+              <ButtonLoadMore onClick={this.onLoadMore} />
+            </>
           )}
-          <ButtonLoadMore onClick={this.onLoadMore} />
       </Layout>
       </>
     );
