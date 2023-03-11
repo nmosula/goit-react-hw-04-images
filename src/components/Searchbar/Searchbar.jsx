@@ -1,5 +1,6 @@
 import { Component } from "react";
-import { Header, Searchform, Searchformbutton,Searchformbuttonlabel, Searchforminput } from './Searchbar.styled';
+import { Header, Searchform, Searchformbutton, Searchformbuttonlabel, Searchforminput } from './Searchbar.styled';
+import {FaSearch} from "react-icons/fa";
 
 
 class Searchbar extends Component {
@@ -21,7 +22,8 @@ class Searchbar extends Component {
         return (
             <Header>
             <Searchform onSubmit={this.handleSubmit}>
-                <Searchformbutton>
+                    <Searchformbutton>
+                        <FaSearch></FaSearch>
                     <Searchformbuttonlabel>Search</Searchformbuttonlabel>
                 </Searchformbutton>
 
