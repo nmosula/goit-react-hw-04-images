@@ -9,7 +9,7 @@ export const Backdrop = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #e7e7e7;
+  background-color: #4d5b76;
   z-index: 1100;
 `;
 
