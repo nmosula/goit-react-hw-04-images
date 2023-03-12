@@ -6,6 +6,7 @@ import ImageGallery from './ImageGallery';
 import { fetchImages } from 'services/fetchImages';
 import ButtonLoadMore from './ButtonLoadMore';
 import Loader from './Loader';
+import Notiflix from 'notiflix';
 
 export const App = () => {
   const [query, setQuery] = useState('');
@@ -22,6 +23,8 @@ export const App = () => {
       setStatus('pending');
       try {
         const { images, totalImages } = await fetchImages(query, page);
+        
+        Notiflix.Notify.info(`Вітаю! Ми знайшли ${images.length} з ${totalImages} фото`);
 
         setImages(prevState => [...prevState, ...images]);
         setStatus('resolved');
@@ -39,8 +42,15 @@ export const App = () => {
 
 
   const handleSubmitSearchImage = (searchValue) => {
-    if (!searchValue) return;
-    if (query === searchValue) return;
+    if (!searchValue) {
+      Notiflix.Notify.warning(`Будь ласка, введіть пошуковий запит`);
+      return;
+    }
+
+    if (query === searchValue) {
+      Notiflix.Notify.warning(`Будь ласка, введіть інший пошуковий запит`);
+      return;
+    }
 
     setQuery(searchValue);
     setImages([]);
