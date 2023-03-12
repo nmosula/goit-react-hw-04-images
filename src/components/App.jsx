@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { GlobalStyle } from "./GlobalStyles";
 import Searchbar from './Searchbar';
 import Layout from './Layout';
@@ -7,82 +7,74 @@ import { fetchImages } from 'services/fetchImages';
 import ButtonLoadMore from './ButtonLoadMore';
 import Loader from './Loader';
 
-export class App extends Component {
-  state = {
-    searchText: '',
-    images: [],
-    page: 1,
-    totalImages: 0,
-    status: 'idle',
-  };
+export const App = () => {
+  const [query, setQuery] = useState('');
+  const [images, setImages] = useState('[]');
+  const [page, setPage] = useState(1);
+  const [totalImages, setTotalImages] = useState(0);
+  const [status, setStatus] = useState('idle');
 
-  getImages = async () => {
-    const { searchText, page } = this.state;
+  useEffect(() => {
 
-    this.setState({ status: 'pending' });
+    if (!query) return;
 
-    try {
-      const { images, totalImages } = await fetchImages(searchText, page);
+    const getImages = async () => {
+      setStatus('pending');
+      try {
+        const { images, totalImages } = await fetchImages(query, page);
 
-     this.setState(prevState => ({
-        images: [...prevState.images, ...images],
-        totalImages: totalImages,
-        status: 'resolved',
-      }));
+        setImages(prevState => [...prevState, ...images]);
+        setStatus('resolved');
+        setTotalImages(totalImages);
+      }
+      catch (error) {
+        console.error(error);
+      }   
     }
-    catch (error) {
-      console.error(error);
-    }
-    
-  }
 
-  componentDidUpdate(prevProps, prevState) {
-    const { searchText, page } = this.state;
+    getImages();
 
-    if (prevState.searchText !== searchText || prevState.page !== page) {
-      this.getImages();
-    }
-  }
+  }, [query, page]);
+  
 
 
-  handleSubmitSearchImage = (searchValue) => {
+  const handleSubmitSearchImage = (searchValue) => {
     if (!searchValue) return;
-    if (this.state.searchText === searchValue) return;
+    if (query === searchValue) return;
 
-
-    this.setState({ 
-      searchText: searchValue,
-      images: [],
-      page: 1,
-      totalImages: 0,
-      status: 'idle',
-    });
+    setQuery(searchValue);
+    setImages([]);
+    setPage(1);
+    setTotalImages(0);
+    setStatus('idle');
   }
 
-  onLoadMore = () => {
-    this.setState(({ page }) => ({
-      page: page + 1,
-    }));
+  const onLoadMore = () => {
+    setPage(page + 1);
   };
 
-  render() {
-    
-    return (
-      <>
+   
+  return (
+    <>
       <GlobalStyle />
       <Layout>
-          <Searchbar onSearch={this.handleSubmitSearchImage} />
+          <Searchbar onSearch={handleSubmitSearchImage} />
 
-          {this.state.status === 'pending' && <Loader />}
+          {status === 'pending' && <Loader />}
 
-          {this.state.images.length > 0 && (
-            <>
-              <ImageGallery images={this.state.images} />
-              <ButtonLoadMore onClick={this.onLoadMore} />
-            </>
-          )}
+          {
+            (status === 'resolved' || (status === 'pending' && page > 1)) && 
+              <ImageGallery images={images} />
+          }
+
+          {
+            ((totalImages !== images.length && status === 'resolved') || (status === 'pending' && page > 1)) &&
+              <ButtonLoadMore onClick={onLoadMore} />
+          }
       </Layout>
-      </>
-    );
-  }
+    </>
+  );
+
 };
+
+export default App;
