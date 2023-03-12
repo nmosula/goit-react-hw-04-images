@@ -1,27 +1,24 @@
-import { Component } from "react";
+import { useState } from "react";
 import { Header, Searchform, Searchformbutton, Searchformbuttonlabel, Searchforminput } from './Searchbar.styled';
-import {FaSearch} from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 
 
-class Searchbar extends Component {
-    state = {
-        searchQuery: "",
+const Searchbar = ({ onSearch }) => {
+    const [query, setQuery] = useState('');
+
+    const handleChange = ({ target: { value } }) => {
+        setQuery(value);   
     }
 
-    handleChange = ({ target: { value } }) => {
-        this.setState({ searchQuery: value });   
-    }
-
-    handleSubmit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        this.props.onSearch(this.state.searchQuery);
-        this.setState({ searchQuery: "" });
+        onSearch(query);
+        setQuery('');
     }
 
-    render () {
         return (
             <Header>
-            <Searchform onSubmit={this.handleSubmit}>
+            <Searchform onSubmit={handleSubmit}>
                     <Searchformbutton>
                         <FaSearch></FaSearch>
                     <Searchformbuttonlabel>Search</Searchformbuttonlabel>
@@ -33,13 +30,12 @@ class Searchbar extends Component {
                     autoComplete="off"
                     autoFocus
                     placeholder="Search images and photos"
-                    value={this.state.searchQuery}
-                    onChange = {this.handleChange}
+                    value={query}
+                    onChange = {handleChange}
                 />
             </Searchform>
             </Header>
         );
-    }
 }
 
 export default Searchbar;
